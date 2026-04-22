@@ -1,3 +1,7 @@
+'use client';
+
+import { useState } from 'react';
+
 const sections = [
   { label: "About", href: "#about" },
   { label: "Journey", href: "#journey" },
@@ -7,6 +11,10 @@ const sections = [
 ];
 
 export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const closeMobileMenu = () => setMobileMenuOpen(false);
+
   return (
     <div className="min-h-screen bg-zinc-950 text-white font-sans">
       <header className="sticky top-0 z-20 border-b border-white/10 bg-zinc-950/95 backdrop-blur-xl">
@@ -29,7 +37,55 @@ export default function Home() {
           >
             Let's connect
           </a>
+
+          {/* Mobile hamburger button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden inline-flex flex-col gap-1.5 items-center justify-center w-10 h-10"
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`h-0.5 w-6 bg-white transition-all duration-300 ${
+                mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
+              }`}
+            />
+            <span
+              className={`h-0.5 w-6 bg-white transition-all duration-300 ${
+                mobileMenuOpen ? 'opacity-0' : ''
+              }`}
+            />
+            <span
+              className={`h-0.5 w-6 bg-white transition-all duration-300 ${
+                mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
+              }`}
+            />
+          </button>
         </div>
+
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-white/10 bg-zinc-900/95 backdrop-blur-xl">
+            <nav className="mx-auto flex max-w-6xl flex-col gap-0 px-6 py-4 sm:px-10">
+              {sections.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMobileMenu}
+                  className="py-3 px-4 text-sm text-zinc-300 transition hover:text-white hover:bg-white/5 rounded-lg"
+                >
+                  {item.label}
+                </a>
+              ))}
+              <a
+                href="#contact"
+                onClick={closeMobileMenu}
+                className="mt-2 rounded-full border border-red-500 px-4 py-2 text-sm text-red-300 transition hover:bg-red-500/10 hover:text-white text-center"
+              >
+                Let's connect
+              </a>
+            </nav>
+          </div>
+        )}
       </header>
 
       <main className="mx-auto flex w-full max-w-6xl flex-col px-6 py-16 sm:px-10">
@@ -78,13 +134,35 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-white/10 bg-zinc-900/70 p-8 shadow-xl shadow-black/30">
-            <p className="text-sm uppercase tracking-[0.2em] text-red-400">Featured skills</p>
-            <div className="mt-6 space-y-4 text-zinc-200">
-              <p>Next.js · TypeScript · Tailwind CSS · Python</p>
-              <p>AI development · automation · clean architecture · performance optimization</p>
-              <p>APIs, serverless functions, data workflows, and developer-first tooling.</p>
+          <div className="relative rounded-[2rem] border border-white/10 bg-zinc-900/70 p-8 shadow-xl shadow-black/30">
+            {/* Decorative dots */}
+            <svg className="absolute -top-6 -right-6 h-12 w-12 text-red-500/30" viewBox="0 0 24 24" fill="none">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+              <circle cx="12" cy="4" r="2" fill="currentColor" />
+              <circle cx="20" cy="4" r="2" fill="currentColor" />
+              <circle cx="4" cy="12" r="2" fill="currentColor" />
+              <circle cx="12" cy="12" r="2" fill="currentColor" />
+              <circle cx="20" cy="12" r="2" fill="currentColor" />
+            </svg>
+            
+            <div className="relative z-10 space-y-4">
+              <img 
+                src="/my img.png" 
+                alt="Cyril" 
+                className="w-full rounded-xl object-cover shadow-lg"
+              />
+              <p className="text-sm uppercase tracking-[0.2em] text-red-400 text-center">Cyril Sofdev</p>
             </div>
+
+            {/* Bottom decorative dots */}
+            <svg className="absolute -bottom-6 -left-6 h-12 w-12 text-red-500/30" viewBox="0 0 24 24" fill="none">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+              <circle cx="12" cy="4" r="2" fill="currentColor" />
+              <circle cx="20" cy="4" r="2" fill="currentColor" />
+              <circle cx="4" cy="12" r="2" fill="currentColor" />
+              <circle cx="12" cy="12" r="2" fill="currentColor" />
+              <circle cx="20" cy="12" r="2" fill="currentColor" />
+            </svg>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
@@ -118,7 +196,11 @@ export default function Home() {
             <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
               <div className="max-w-3xl space-y-6">
                 <div className="flex items-center gap-3 text-sm uppercase tracking-[0.35em] text-red-400">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-red-500/15 text-red-300">A</span>
+                  <img 
+                    src="/my img.png" 
+                    alt="Cyril" 
+                    className="h-10 w-10 rounded-2xl object-cover border border-red-500/30"
+                  />
                   <span className="font-semibold tracking-[0.2em] text-zinc-300">About me</span>
                 </div>
                 <div className="space-y-4 text-zinc-200 leading-8">
@@ -496,7 +578,7 @@ export default function Home() {
 
       <footer className="border-t border-white/10 bg-zinc-950/95 px-6 py-8 text-sm text-zinc-500 sm:px-10">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} Cyril. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Cyril Founder Of Sofdev Inc. All rights reserved.</span>
           <span>Built with Next.js, TypeScript, Tailwind CSS, and Python.</span>
         </div>
       </footer>
